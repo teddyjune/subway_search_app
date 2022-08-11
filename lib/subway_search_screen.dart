@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:subway_search_app/debounce.dart';
 import 'package:subway_search_app/subway.dart';
 import 'package:subway_search_app/subway_view_model.dart';
 
@@ -14,6 +15,7 @@ class SubwayRealtimeSearchScreen extends StatefulWidget {
 class _SubwayRealtimeSearchScreenState
     extends State<SubwayRealtimeSearchScreen> {
   final _controller = TextEditingController();
+  final _debounce = Debounce(milliseconds: 500);
 
   @override
   void dispose() {
@@ -33,23 +35,16 @@ class _SubwayRealtimeSearchScreenState
         ),
       ),
       body: Column(children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            controller: _controller,
-            decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.primary, width: 2),
-              ),
-              suffixIcon: GestureDetector(
-                  onTap: () {
-                    viewModel.fetchInfo(_controller.text);
-                  },
-                  child: const Icon(Icons.search)),
-              hintText: '지하철역을 입력하세요',
+        TextField(
+          controller: _controller,
+          onChanged: _debounce.run(() => viewModel.fetchInfo(_controller.text)),
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primary, width: 2),
             ),
+            hintText: '지하철역을 입력하세요',
           ),
         ),
         Expanded(

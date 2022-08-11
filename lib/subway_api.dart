@@ -25,6 +25,9 @@ class SubwayApi {
     String jsonString = response.body;
 
     Map<String, dynamic> json = jsonDecode(jsonString);
+    if (json['realtimeArrivalList'] == null) {
+      return List.empty();
+    }
     Iterable realtimeArrivalList = json['realtimeArrivalList'];
     return realtimeArrivalList.map((e) => Subway.fromJson(e)).toList();
   }
