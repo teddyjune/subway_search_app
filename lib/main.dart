@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:subway_search_app/subway_search_screen.dart';
-import 'package:subway_search_app/subway_view_model.dart';
+import 'package:subway_search_app/ui/subway_screen.dart';
+import 'package:subway_search_app/ui/subway_view_model.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
